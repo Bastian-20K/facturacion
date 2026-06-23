@@ -21,6 +21,10 @@ public class DetalleFactura {
 
     private String nombreProducto;
 
+    private String sku;
+
+    private Integer cantidad;
+
     private Integer precio;
 
     private Long sucursalId;

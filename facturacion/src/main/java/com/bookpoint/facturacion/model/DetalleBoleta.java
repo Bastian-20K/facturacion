@@ -23,5 +23,9 @@ public class DetalleBoleta {
 
     private Integer precio;
 
+    private String sku;
+
+    private Integer cantidad;
+
     private Long sucursalId;
 }

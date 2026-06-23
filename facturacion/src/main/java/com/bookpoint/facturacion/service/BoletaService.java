@@ -34,6 +34,8 @@ public class BoletaService {
                                 .tipoProducto(TipoProducto.valueOf(p.get("tipoProducto").toString()))
                                 .nombreProducto(p.get("nombreProducto").toString())
                                 .precio(Integer.valueOf(p.get("precio").toString()))
+                                .cantidad(Integer.valueOf(p.get("precio").toString()))
+                                .sku(p.get("sku").toString())
                                 .sucursalId(Long.valueOf(p.get("sucursalId").toString()))
                                 .build()
                         ).toList();
