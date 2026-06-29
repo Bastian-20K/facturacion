@@ -153,5 +153,39 @@ public class BoletaServiceTest {
                 resultado.size()
         );
     }
+
+    @Test
+        void buscarPorUsuario_deberiaRetornarListaVacia() {
+
+        when(repository.findByUsuarioId(999L))
+                .thenReturn(List.of());
+
+        List<Boleta> resultado =
+                service.buscarPorUsuario(999L);
+
+        assertNotNull(resultado);
+
+        assertEquals(
+                0,
+                resultado.size()
+        );
+    }
+
+    @Test
+        void listarBoletas_deberiaRetornarListaVacia() {
+
+        when(repository.findAll())
+                .thenReturn(List.of());
+
+        List<Boleta> resultado =
+                service.listarBoletas();
+
+        assertNotNull(resultado);
+
+        assertEquals(
+                0,
+                resultado.size()
+        );
+}
 }
 
