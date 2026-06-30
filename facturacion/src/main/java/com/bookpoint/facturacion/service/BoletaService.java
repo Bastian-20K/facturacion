@@ -23,7 +23,20 @@ public class BoletaService {
 
     public Boleta crearBoleta(BoletaDTO request) {
 
-        Map<String, Object> venta = restTemplate.getForObject("http://localhost:8085/api/v1/ventas/" + request.getVentaId(),Map.class);
+        Map<String, Object> venta = null;
+
+    try {
+        venta = restTemplate.getForObject(
+                "http://localhost:8085/api/v1/ventas/presencial/" + request.getVentaId(),
+                Map.class
+        );
+    } catch (Exception e) {
+
+        venta = restTemplate.getForObject(
+                "http://localhost:8085/api/v1/ventas/online/" + request.getVentaId(),
+                Map.class
+        );
+    }
 
         List<Map<String, Object>> detallesMap =(List<Map<String, Object>>) venta.get("detalleProductos");
 
@@ -40,17 +53,26 @@ public class BoletaService {
                                 .build()
                         ).toList();
 
-        Boleta boleta = Boleta.builder()
-                .ventaId(Long.valueOf(venta.get("idVenta").toString()))
-                .usuarioId(Long.valueOf(venta.get("usuarioId").toString()))
-                .rutEmisor(request.getRutEmisor())
-                .subtotal(Integer.valueOf(venta.get("subtotal").toString()))
-                .descuento(Integer.valueOf(venta.get("descuentoCupon").toString()))
-                .total(Integer.valueOf(venta.get("totalPagar").toString()))
-                .detalleProductos(detalles)
-                .fechaBoleta(LocalDateTime.now())
-                .build();
-        return repository.save(boleta);
+        Long usuarioId = null;
+
+        if (venta.get("usuarioId") != null) {
+            usuarioId = Long.valueOf(
+                    venta.get("usuarioId").toString()
+            );
+        }
+
+    Boleta boleta = Boleta.builder()
+            .ventaId(Long.valueOf(venta.get("idVenta").toString()))
+            .usuarioId(usuarioId)
+            .rutEmisor(request.getRutEmisor())
+            .subtotal(Integer.valueOf(venta.get("subtotal").toString()))
+            .descuento(Integer.valueOf(venta.get("descuentoCupon").toString()))
+            .total(Integer.valueOf(venta.get("totalPagar").toString()))
+            .detalleProductos(detalles)
+            .fechaBoleta(LocalDateTime.now())
+            .build();
+
+    return repository.save(boleta);
     }
 
     public Boleta buscarPorId(Long id) {
