@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.bookpoint.facturacion.dto.BoletaDTO;
@@ -30,7 +31,7 @@ public class BoletaService {
                 "http://localhost:8085/api/v1/ventas/presencial/" + request.getVentaId(),
                 Map.class
         );
-    } catch (Exception e) {
+    } catch (HttpClientErrorException.NotFound e) {
 
         venta = restTemplate.getForObject(
                 "http://localhost:8085/api/v1/ventas/online/" + request.getVentaId(),
